@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Form\Product\Step;
+
+use App\Entity\Product;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class ProductConfirmationStepType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('highValueConfirmed', CheckboxType::class, [
+                'label' => 'Je confirme vouloir ajouter un produit dont le prix dépasse 1000 €',
+                'required' => true,
+                'attr' => ['class' => 'h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded'],
+            ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Product::class,
+        ]);
+    }
+}
