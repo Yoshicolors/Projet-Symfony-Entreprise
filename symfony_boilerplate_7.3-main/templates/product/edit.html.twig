@@ -1,0 +1,124 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title %}Modifier {{ product.name }} — Étape {{ step }}/{{ totalSteps }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <a href="{{ path('app_product_index') }}" class="inline-flex items-center text-sm text-gray-500 hover:text-indigo-600 mb-6 transition-colors duration-200">
+        <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        Retour aux produits
+    </a>
+
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            {% for s in steps %}
+                <div class="flex items-center {% if not loop.last %}flex-1{% endif %}">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold transition-all duration-300
+                        {% if loop.index < step %}bg-emerald-500 text-white
+                        {% elseif loop.index == step %}bg-indigo-600 text-white shadow-lg shadow-indigo-500/30
+                        {% else %}bg-gray-200 text-gray-500{% endif %}">
+                        {% if loop.index < step %}
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        {% else %}
+                            {{ loop.index }}
+                        {% endif %}
+                    </div>
+                    {% if not loop.last %}
+                        <div class="flex-1 h-1 mx-3 rounded-full transition-all duration-300
+                            {% if loop.index < step %}bg-emerald-500{% else %}bg-gray-200{% endif %}"></div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="flex justify-between mt-2">
+            {% for s in steps %}
+                <span class="text-xs text-gray-500 {% if loop.index == step %}font-semibold text-indigo-600{% endif %}">{{ s.title }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+        <h3 class="text-lg font-semibold text-gray-800 mb-6">{{ stepTitle }}</h3>
+
+        {% if isSummary %}
+            <div class="space-y-4 mb-8">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="text-xs text-gray-500 mb-1">Type</p>
+                        <p class="text-sm font-medium text-gray-900">{{ product.productType == 'physical' ? 'Produit physique' : 'Produit numérique' }}</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="text-xs text-gray-500 mb-1">Prix</p>
+                        <p class="text-sm font-medium text-gray-900">{{ product.price|number_format(2, ',', ' ') }} €</p>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-4">
+                    <p class="text-xs text-gray-500 mb-1">Nom</p>
+                    <p class="text-sm font-medium text-gray-900">{{ product.name }}</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-4">
+                    <p class="text-xs text-gray-500 mb-1">Description</p>
+                    <p class="text-sm text-gray-700">{{ product.description|default('—') }}</p>
+                </div>
+                {% if product.isPhysical %}
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="text-xs text-gray-500 mb-1">Poids</p>
+                        <p class="text-sm font-medium text-gray-900">{{ product.weight ? product.weight ~ ' kg' : '—' }}</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="text-xs text-gray-500 mb-1">Dimensions</p>
+                        <p class="text-sm font-medium text-gray-900">{{ product.dimensions|default('—') }}</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="text-xs text-gray-500 mb-1">Stock</p>
+                        <p class="text-sm font-medium text-gray-900">{{ product.stock ?? '—' }}</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="text-xs text-gray-500 mb-1">Durée licence</p>
+                        <p class="text-sm font-medium text-gray-900">{{ product.licenseDuration ? product.licenseDuration ~ ' mois' : '—' }}</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="text-xs text-gray-500 mb-1">Max activations</p>
+                        <p class="text-sm font-medium text-gray-900">{{ product.maxActivations ?? '—' }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <form method="POST" action="{{ path('app_product_edit', {id: product.id, step: step}) }}">
+                <div class="flex items-center justify-between">
+                    <a href="{{ path('app_product_edit', {id: product.id, step: step - 1}) }}" class="inline-flex items-center px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors duration-200">
+                        <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        Précédent
+                    </a>
+                    <button type="submit" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+                        Enregistrer les modifications
+                    </button>
+                </div>
+            </form>
+        {% else %}
+            {{ form_start(form, {'attr': {'class': 'space-y-5'}}) }}
+                {{ form_widget(form) }}
+                <div class="flex items-center justify-between pt-4">
+                    {% if step > 1 %}
+                        <a href="{{ path('app_product_edit', {id: product.id, step: step - 1}) }}" class="inline-flex items-center px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors duration-200">
+                            <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                            Précédent
+                        </a>
+                    {% else %}
+                        <div></div>
+                    {% endif %}
+                    <button type="submit" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+                        Suivant
+                        <svg class="w-4 h-4 inline ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            {{ form_end(form) }}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

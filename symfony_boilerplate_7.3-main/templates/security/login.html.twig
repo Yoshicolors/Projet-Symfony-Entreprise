@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TechFlow - Connexion{% endblock %}
+
+{% block body %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900">
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative w-full max-w-md px-4">
+        <div class="bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl p-8">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl mb-4 shadow-lg shadow-indigo-500/30">
+                    <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold text-white">TechFlow</h1>
+                <p class="text-slate-400 text-sm mt-1">Connectez-vous à votre backoffice</p>
+            </div>
+
+            {% if error %}
+                <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-300 text-sm">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
+
+            <form action="{{ path('app_login') }}" method="post" class="space-y-5">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-slate-300 mb-2">Email</label>
+                    <input type="email" id="username" name="_username" value="{{ last_username }}" required autofocus
+                        class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200">
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-slate-300 mb-2">Mot de passe</label>
+                    <input type="password" id="password" name="_password" required
+                        class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200">
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 transform hover:-translate-y-0.5">
+                    Se connecter
+                </button>
+            </form>
+
+            <div class="mt-8 pt-6 border-t border-white/10">
+                <p class="text-xs text-slate-500 text-center">Comptes de test disponibles :</p>
+                <div class="mt-3 space-y-2 text-xs text-slate-400">
+                    <div class="flex justify-between items-center bg-white/5 rounded-lg px-3 py-2">
+                        <span class="font-medium text-slate-300">Admin</span>
+                        <span>admin@backoffice.com / admin123</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white/5 rounded-lg px-3 py-2">
+                        <span class="font-medium text-slate-300">Manager</span>
+                        <span>manager@backoffice.com / manager123</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white/5 rounded-lg px-3 py-2">
+                        <span class="font-medium text-slate-300">User</span>
+                        <span>user@backoffice.com / user123</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
