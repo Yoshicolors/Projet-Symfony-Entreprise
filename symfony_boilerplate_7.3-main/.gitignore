@@ -23,3 +23,13 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+###> symfonycasts/tailwind-bundle ###
+/var/tailwind/
+###< symfonycasts/tailwind-bundle ###
+
+/node_modules/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
