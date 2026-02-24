@@ -58,6 +58,9 @@ php -S localhost:8000 -t public
 | Manager | manager@backoffice.com | manager123 |
 | Utilisateur | user@backoffice.com | user123 |
 
+## Vidéo de test
+https://youtu.be/gwvIKFCr3mw
+
 ## Fonctionnalités
 
 ### Authentification et sécurité
