@@ -28,6 +28,7 @@ class ProductTypeStepType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Product::class,
+            'validation_groups' => ['product_type'],
         ]);
     }
 }

@@ -19,15 +19,15 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'Le nom du produit est obligatoire')]
+    #[Assert\NotBlank(message: 'Le nom du produit est obligatoire', groups: ['details'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    #[Assert\NotBlank(message: 'Le prix est obligatoire')]
-    #[Assert\Positive(message: 'Le prix doit être positif')]
+    #[Assert\NotBlank(message: 'Le prix est obligatoire', groups: ['details'])]
+    #[Assert\Positive(message: 'Le prix doit être positif', groups: ['details'])]
     private ?string $price = null;
 
     #[ORM\Column(length: 20)]
